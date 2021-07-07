@@ -1,8 +1,8 @@
-class Grass extends LivingCreature {
-    constructor(x,y) {
+class GrassAdder extends LivingCreature {
+    constructor(x, y) {
         super(x, y)
-        this.multiply = 0;
-        // this.directions = []
+        this.energy = 10
+        this.multiply = 0
     }
     mul() {
         this.multiply++;
@@ -13,14 +13,13 @@ class Grass extends LivingCreature {
         if (newCell && this.multiply >= 8) {
             var newX = newCell[0];
             var newY = newCell[1];
-            matrix[newY][newX] = 1;
+            matrix[newY][newX] = 6;
 
-            var newGrass = new Grass(newX, newY);
-            grassArr.push(newGrass);
+            var newGrassAdder = new Grass(newX, newY);
+            GrassAdderArr.push(newGrassA);
             this.multiply = 0;
         }
     }
+
 }
-
-
 
