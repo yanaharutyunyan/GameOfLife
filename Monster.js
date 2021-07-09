@@ -1,10 +1,9 @@
-class GrassEater extends LivingCreature {
+class Monster extends LivingCreature {
     constructor(x, y) {
         super(x, y)
-        this.energy = 8;
+        this.energy = 10;
         this.multiply = 0
         // this.directions = [];
-
     }
     chooseCell(character) {
         this.getNewCoordinates()
@@ -16,16 +15,17 @@ class GrassEater extends LivingCreature {
         var emptyCells = this.chooseCell(0);
         var newCell = random(emptyCells);
 
-        if (newCell && this.multiply >= 15) {
+        if (newCell && this.multiply >= 10) {
             var newX = newCell[0];
             var newY = newCell[1];
-            matrix[newY][newX] = 2;
+            matrix[newY][newX] = 7;
 
-            var newGrass = new GrassEater(newX, newY);
-            grassEaterArr.push(newGrass);
+            var newMonster = new Monster(newX, newY);
+            MonsterArr.push(newMonster);
             this.multiply = 0;
         }
     }
+
     move() {
         this.energy--
         var emptyCells = this.chooseCell(0)
@@ -45,15 +45,15 @@ class GrassEater extends LivingCreature {
             }
         }
     }
+
     eat() {
         var emptyCells = this.chooseCell(1)
         var newCell = emptyCells[Math.floor(Math.random() * emptyCells.length)]
-        var emptyCells1 = this.chooseCell(4)
+        var emptyCells1 = this.chooseCell(2)
         var newCell1 = emptyCells1[Math.floor(Math.random() * emptyCells1.length)]
-        var emptyCells2 = this.chooseCell(5)
+        var emptyCells2 = this.chooseCell(3)
         var newCell2 = emptyCells2[Math.floor(Math.random() * emptyCells2.length)]
-        var emptyCells3 = this.chooseCell(6)
-        var newCell3 = emptyCells3[Math.floor(Math.random() * emptyCells3.length)]
+
         if (newCell) {
             this.energy++
             var newX = newCell[0]
@@ -69,8 +69,9 @@ class GrassEater extends LivingCreature {
                     break
                 }
             }
-        } else if (newCell1) {
-            this.energy += 2
+        }
+        else if(newCell1) {
+            this.energy++
             var newX = newCell1[0]
             var newY = newCell1[1]
 
@@ -78,15 +79,16 @@ class GrassEater extends LivingCreature {
             matrix[this.y][this.x] = 0
             this.x = newX
             this.y = newY
-            for (var i in Energy1Arr) {
-                if (newX == Energy1Arr[i].x && newY == Energy1Arr[i].y) {
-                    Energy1Arr.splice(i, 1)
+            for (var i in grassEaterArr) {
+                if (newX == grassEaterArr[i].x && newY == grassEaterArr[i].y) {
+                    grassEaterArr.splice(i, 1)
                     break
                 }
             }
         }
-        else if (newCell2) {
-            this.energy -= 2
+
+        else if(newCell2) {
+            this.energy++
             var newX = newCell2[0]
             var newY = newCell2[1]
 
@@ -94,26 +96,25 @@ class GrassEater extends LivingCreature {
             matrix[this.y][this.x] = 0
             this.x = newX
             this.y = newY
-            for (var i in Energy2Arr) {
-                if (newX == Energy2Arr[i].x && newY == Energy2Arr[i].y) {
-                    Energy2Arr.splice(i, 1)
+            for (var i in PredatorArr) {
+                if (newX == PredatorArr[i].x && newY == PredatorArr[i].y) {
+                    PredatorArr.splice(i, 1)
                     break
                 }
             }
         }
-       
         else {
-                this.move()
-            }
+            this.move()
         }
-        dietaxum(){
-            matrix[this.y][this.x] = 0;
-            for (var i in grassEaterArr) {
-                if (this.x == grassEaterArr[i].x && this.y == grassEaterArr[i].y) {
-                    grassEaterArr.splice(i, 1);
-                    break;
-                }
+ }
+
+    dietaxum() {
+        matrix[this.y][this.x] = 0;
+        for (var i in MonsterArr) {
+            if (this.x == MonsterArr[i].x && this.y == MonsterArr[i].y) {
+                MonsterArr.splice(i, 1);
+                break;
             }
         }
     }
-
+}

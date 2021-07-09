@@ -5,6 +5,7 @@ class GrassAdder extends LivingCreature {
         this.multiply = 0
     }
     mul() {
+
         this.multiply++;
         var emptyCells = this.chooseCell(0);
         var newCell = random(emptyCells);
@@ -13,13 +14,12 @@ class GrassAdder extends LivingCreature {
         if (newCell && this.multiply >= 8) {
             var newX = newCell[0];
             var newY = newCell[1];
-            matrix[newY][newX] = 6;
+            matrix[newY][newX] = 1;
 
             var newGrassAdder = new Grass(newX, newY);
-            GrassAdderArr.push(newGrassA);
+            grassArr.push(newGrassAdder);
             this.multiply = 0;
         }
     }
-
 }
 

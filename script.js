@@ -1,4 +1,4 @@
-function generator(matLen, gr, grEat, grPred, grEg1, grEg2, grAdd) {
+function generator(matLen, gr, grEat, grPred, grEg1, grEg2, grAdd, grMonst) {
     let matrix = [];
     for (let i = 0; i < matLen; i++) {
         matrix[i] = [];
@@ -48,13 +48,19 @@ function generator(matLen, gr, grEat, grPred, grEg1, grEg2, grAdd) {
             matrix[x][y] = 6;
         }
     }
-
+    for (let i = 0; i < grMonst; i++) {
+        let x = Math.floor(Math.random() * matLen);
+        let y = Math.floor(Math.random() * matLen);
+        if (matrix[x][y] == 0) {
+            matrix[x][y] = 7;
+        }
+    }
 
     return matrix;
 }
 let side = 20;
 
-let matrix = generator(30, 20, 20, 5, 20, 20, 5);
+let matrix = generator(30, 20, 20, 5, 20, 20, 5, 10);
 
 
 
@@ -67,6 +73,7 @@ var PredatorArr = []
 var Energy1Arr = []
 var Energy2Arr = []
 var GrassAdderArr = []
+var MonsterArr = []
 
 
 function setup() {
@@ -93,13 +100,16 @@ function setup() {
                 var grEg1 = new Energy1(x, y);
                 Energy1Arr.push(grEg1)
             }
-            else if (matrix[y][x] == 5) {
+            else if (matrix[y][x] == 6) {
                 var grAdd = new GrassAdder(x, y);
                 GrassAdderArr.push(grAdd)
             }
+            else if (matrix[y][x] == 7) {
+                var grMonst = new Monster(x, y);
+                MonsterArr.push(grMonst)
+            }
         }
     }
-
     console.log(grassArr);
 }
 
@@ -147,6 +157,11 @@ function draw() {
                 fill("#114a0e");
                 rect(x * side, y * side, side, side);
             }
+            else if (matrix[y][x] == 7) {
+
+                fill("blue");
+                rect(x * side, y * side, side, side);
+            }
         }
     }
     for (var i in grassArr) {
@@ -166,10 +181,16 @@ function draw() {
         }
 
     }
-}
-for (var i in Energy2Arr) {
-    if (PredatorArr.length <= 3) {
-        Energy2Arr[i].anhayt1();
+    for (var i in Energy2Arr) {
+        if (PredatorArr.length <= 3) {
+            Energy2Arr[i].anhayt1();
+        }
     }
-
+    for(var i in GrassAdderArr){
+        GrassAdderArr[i].mul()
+    }
+    for (var i in MonsterArr) {
+        MonsterArr[i].mul();
+        MonsterArr[i].eat()
+    }
 }
