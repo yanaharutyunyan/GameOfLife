@@ -1,4 +1,5 @@
-class Energy1 extends LivingCreature{
+let LivingCreature = require('./class')
+module.exports = class Energy1 extends LivingCreature{
     constructor(x, y) {
         super(x, y)
         this.energy = 0
@@ -6,9 +7,9 @@ class Energy1 extends LivingCreature{
         
     }
     anhayt() {
-        console.log(PredatorArr.length)
+        
         var emptyCells = this.chooseCell(0);
-        var newCell = random(emptyCells);
+        var newCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
 
         if (newCell) {
             var newX = newCell[0];

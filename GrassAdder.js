@@ -1,4 +1,5 @@
-class GrassAdder extends LivingCreature {
+let LivingCreature = require('./class')
+module.exports = class GrassAdder extends LivingCreature {
     constructor(x, y) {
         super(x, y)
         this.energy = 10
@@ -8,7 +9,7 @@ class GrassAdder extends LivingCreature {
 
         this.multiply++;
         var emptyCells = this.chooseCell(0);
-        var newCell = random(emptyCells);
+        var newCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
 
 
         if (newCell && this.multiply >= 8) {

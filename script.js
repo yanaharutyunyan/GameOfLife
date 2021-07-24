@@ -1,132 +1,44 @@
-function generator(matLen, gr, grEat, grPred, grEg1, grEg2, grAdd, grMonst) {
-    let matrix = [];
-    for (let i = 0; i < matLen; i++) {
-        matrix[i] = [];
-        for (let j = 0; j < matLen; j++) {
-            matrix[i][j] = 0;
-        }
-    }
-    for (let i = 0; i < gr; i++) {
-        let x = Math.floor(Math.random() * matLen);
-        let y = Math.floor(Math.random() * matLen);
-        if (matrix[x][y] == 0) {
-            matrix[x][y] = 1;
-        }
-    }
-    for (let i = 0; i < grEat; i++) {
-        let x = Math.floor(Math.random() * matLen);
-        let y = Math.floor(Math.random() * matLen);
-        if (matrix[x][y] == 0) {
-            matrix[x][y] = 2;
-        }
-    }
-    for (let i = 0; i < grPred; i++) {
-        let x = Math.floor(Math.random() * matLen);
-        let y = Math.floor(Math.random() * matLen);
-        if (matrix[x][y] == 0) {
-            matrix[x][y] = 3;
-        }
-    }
-    for (let i = 0; i < grEg1; i++) {
-        let x = Math.floor(Math.random() * matLen);
-        let y = Math.floor(Math.random() * matLen);
-        if (matrix[x][y] == 0) {
-            matrix[x][y] = 4;
-        }
-    }
-    for (let i = 0; i < grEg2; i++) {
-        let x = Math.floor(Math.random() * matLen);
-        let y = Math.floor(Math.random() * matLen);
-        if (matrix[x][y] == 0) {
-            matrix[x][y] = 5;
-        }
-    }
-    for (let i = 0; i < grAdd; i++) {
-        let x = Math.floor(Math.random() * matLen);
-        let y = Math.floor(Math.random() * matLen);
-        if (matrix[x][y] == 0) {
-            matrix[x][y] = 6;
-        }
-    }
-    for (let i = 0; i < grMonst; i++) {
-        let x = Math.floor(Math.random() * matLen);
-        let y = Math.floor(Math.random() * matLen);
-        if (matrix[x][y] == 0) {
-            matrix[x][y] = 7;
-        }
-    }
+side = 20;
 
-    return matrix;
-}
-let side = 20;
-
-let matrix = generator(30, 20, 20, 5, 20, 20, 5, 10);
-
-
-
-
-
-
-var grassArr = []
-var grassEaterArr = []
-var PredatorArr = []
-var Energy1Arr = []
-var Energy2Arr = []
-var GrassAdderArr = []
-var MonsterArr = []
-
+var socket = io()
 
 function setup() {
     frameRate(5);
-    createCanvas(matrix[0].length * side, matrix.length * side);
+    createCanvas(30 * side, 30 * side);
     background('#acacac');
-
-    for (var y = 0; y < matrix.length; ++y) {
-        for (var x = 0; x < matrix[y].length; ++x) {
-            if (matrix[y][x] == 1) {
-                console.log(matrix[y][x])
-                var gr = new Grass(x, y);
-                grassArr.push(gr);
-            }
-            else if (matrix[y][x] == 2) {
-                var grEat = new GrassEater(x, y);
-                grassEaterArr.push(grEat);
-            }
-            else if (matrix[y][x] == 3) {
-                var grPred = new Predator(x, y);
-                PredatorArr.push(grPred)
-            }
-            else if (matrix[y][x] == 4) {
-                var grEg1 = new Energy1(x, y);
-                Energy1Arr.push(grEg1)
-            }
-            else if (matrix[y][x] == 6) {
-                var grAdd = new GrassAdder(x, y);
-                GrassAdderArr.push(grAdd)
-            }
-            else if (matrix[y][x] == 7) {
-                var grMonst = new Monster(x, y);
-                MonsterArr.push(grMonst)
-            }
-        }
-    }
-    console.log(grassArr);
 }
 
+weather = "summer"
 
+socket.on("send weather", function (data) {
+    weather = data
+})
 
-
-
-
-
-function draw() {
+function nkarel(matrix) {
 
     for (var y = 0; y < matrix.length; y++) {
         for (var x = 0; x < matrix[y].length; x++) {
-
-            if (matrix[y][x] == 1) {
-                fill("green");
+            if (matrix[y][x] == 0) {
+                fill("#acacac");
                 rect(x * side, y * side, side, side);
+            }
+            else if (matrix[y][x] == 1) {
+                if (weather == "summer") {
+                    fill("green");
+                    rect(x * side, y * side, side, side);
+                }
+                else if (weather == "autumn") {
+                    fill("#a37c0f");
+                    rect(x * side, y * side, side, side);
+                }
+                else if (weather == "winter") {
+                    fill("#f2f0eb");
+                    rect(x * side, y * side, side, side);
+                }
+                else if (weather == "spring") {
+                    fill("#36a816");
+                    rect(x * side, y * side, side, side);
+                }
             }
             else if (matrix[y][x] == 0) {
                 fill("#acacac");
@@ -164,33 +76,18 @@ function draw() {
             }
         }
     }
-    for (var i in grassArr) {
-        grassArr[i].mul();
-    }
-    for (var i in grassEaterArr) {
-        grassEaterArr[i].mul();
-        grassEaterArr[i].eat()
-    }
-    for (var i in PredatorArr) {
-        PredatorArr[i].mul();
-        PredatorArr[i].eat()
-    }
-    for (var i in Energy1Arr) {
-        if (PredatorArr.length <= 10) {
-            Energy1Arr[i].anhayt();
-        }
-
-    }
-    for (var i in Energy2Arr) {
-        if (PredatorArr.length <= 3) {
-            Energy2Arr[i].anhayt1();
-        }
-    }
-    for(var i in GrassAdderArr){
-        GrassAdderArr[i].mul()
-    }
-    for (var i in MonsterArr) {
-        MonsterArr[i].mul();
-        MonsterArr[i].eat()
-    }
 }
+
+
+
+    socket.on("send matrix", nkarel)
+
+    function kill() {
+        socket.emit("kill")
+    }
+    function addGrass() {
+        socket.emit("add grass")
+    }
+    function addGrassEater() {
+        socket.emit("add grassEater")
+    }
